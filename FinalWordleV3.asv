@@ -1,0 +1,83 @@
+% Final iteration of the code
+% Created by Asher Kore
+% a1877203
+
+% The game created is the MATLAB version of the very popular game 
+% called WORDLE with small extra features
+
+% clears all workspace and variables 
+close all
+clc 
+clear workspace
+
+%adds the following properties to the figure window
+% startWindow = figure("Name","Wordle by Asher Kore","Color",'#121213');
+% 
+% forces resolution and position of window to ensure graphics
+% are in the same position every time the program is run
+% set(gcf, 'Position',  [960, 0, 960, 1050])
+% 
+% return current axis
+% ax = gca;
+% set title and subtitle properties for the figure
+% ax.Title.String = 'Wordle';
+% ax.Title.Color = 'white';
+% ax.Title.FontWeight = 'bold';
+% ax.Title.FontSize = 50;
+% ax.Subtitle.String = 'Matlab Major Project';
+% ax.Subtitle.FontWeight = 'bold';
+% ax.Subtitle.Color = 'white';
+% ax.Subtitle.FontSize = 20; 
+
+maxAttempts = chooseDifficulty; %determines maxGuesses.
+
+[targetWord, targetCharacters] = selectCategory;
+disp(targetWord);
+
+
+% define variables
+numberOfGuesses = 0; %Set number of guesses user has had.
+correctLetters = 0; %set correct letters to 0 at start.
+letterImage = [];
+imageTiles = [];
+
+while numberOfGuesses < maxAttempts %Loop until exceed maxGuesses. 
+   
+    wordGuess = input('Guess the word: ','s');
+    
+    length(wordGuess) > 5 
+        fprintf("You have only %d guesses remaining !!", numberOfGuesses + 1);
+        wordGuess = input(['Your guess had too many letters! Please try again.' ...
+            newline, 'Guess the word: '], 's'); 
+    elseif length(wordGuess) < 5 
+        fprintf("You have only %d guesses remaining !!", numberOfGuesses + 1);
+        wordGuess = input(['Your guess did not have enough letters! Please try again.' ...
+            newline, 'Guess the word: '], 's');
+    end
+
+    correctLetters = findCorrectPosition(wordGuess, targetCharacters);
+    lettersToGuess = targetCharacters(~correctLetters);
+    correctLetters = findWrongPosition(wordGuess, lettersToGuess, correctLetters); 
+    disp(correctLetters);
+    imageTiles = showImage(correctLetters,letterImage, imageTiles);
+    numberOfGuesses = numberOfGuesses +1;
+    
+    if wordGuess == targetWord
+       %Displays winning message.
+       fprintf('Congratulations! \n');
+       fprintf('You guessed the word in %d guesses! \n', numberOfGuesses);
+       fprintf('The Word was %s!', targetWord);
+
+       pause(10); %Pause before clearing game board.
+       close all
+       clc
+       return 
+
+    end 
+end 
+
+fprintf('You did not guess the word! ')%Display losing message.
+fprintf('The word was %s!', targetWord);
+pause(10); %Pause before clearing game board
+close all
+clc

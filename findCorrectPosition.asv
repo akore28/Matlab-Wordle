@@ -1,0 +1,27 @@
+%searchCorrectPosition
+%search for matches in the correct position
+
+function [correctLetters] = findCorrectPosition(i, numberOfLetters, guess, wordToGuessCell)
+    for i = 1:5
+            if guess(i) = strcmp(wordToGuessCell(i))
+                correctLetters(i) = 1;
+            else
+                correctLetters(i) = 0;
+            end
+            
+    end
+end 
+
+
+
+
+% function correctLetters = findCorrectPosition(~, ~, guessedWord, targetWordCell)
+% 
+% for i = 1:5
+%     if guessedWord(i) == targetWordCell(i)
+%         correctLetters(i) = 1;
+%     else
+%         correctLetters(i) = 0;
+%     end
+% end
+% end 
